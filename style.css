@@ -1,89 +1,86 @@
-/* Base Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-html, body {
-  height: 100%;
+
+body {
+  background: radial-gradient(circle at top, #0d0d2b, #000010);
   overflow: hidden;
-  background: linear-gradient(to bottom, #0a0f2c, #1c1b4a);
-  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  position: relative;
 }
 
-/* Canvas */
-#sky {
+/* Star Background */
+#stars {
   position: absolute;
-  top: 0;
-  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
   z-index: 0;
+  background-image: radial-gradient(white 1px, transparent 1px),
+                    radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  animation: moveStars 60s linear infinite;
 }
 
-/* Moon Animation */
-.moon {
+@keyframes moveStars {
+  from {
+    background-position: 0 0, 25px 25px;
+  }
+  to {
+    background-position: -1000px 1000px, -975px 1025px;
+  }
+}
+
+/* Moon */
+#moon {
   position: absolute;
   top: 80px;
   right: 80px;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at 30% 30%, #fff8d6, #d1cdb6);
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fffbe6, #e0d6c4);
-  box-shadow: 0 0 80px 20px rgba(255, 255, 200, 0.3);
-  animation: moonCycle 20s infinite ease-in-out;
+  box-shadow: 0 0 40px 20px rgba(255, 255, 200, 0.3);
+  animation: glowMoon 8s ease-in-out infinite alternate;
   z-index: 1;
 }
-@keyframes moonCycle {
-  0%, 100% {
-    clip-path: circle(50% at 50% 50%);
-  }
-  25% {
-    clip-path: circle(40% at 30% 50%);
-  }
-  50% {
-    clip-path: circle(30% at 0% 50%);
-  }
-  75% {
-    clip-path: circle(40% at 70% 50%);
-  }
+
+@keyframes glowMoon {
+  0% { transform: rotate(0deg) scale(1); filter: brightness(0.9); }
+  100% { transform: rotate(15deg) scale(1.03); filter: brightness(1.2); }
 }
 
-/* Intro Text */
-.intro {
+/* Text Container */
+.text-container {
   position: absolute;
-  width: 100%;
   top: 35%;
+  width: 100%;
   text-align: center;
-  color: white;
   z-index: 2;
 }
 
-.intro h1 {
+/* Animated Text */
+.animated-text {
+  font-family: 'Great Vibes', cursive;
   font-size: 3em;
-  margin-bottom: 0.5em;
-}
-
-.intro p {
-  font-size: 1.5em;
-  max-width: 90%;
-  margin: 0 auto;
-}
-
-/* Fancy Text Animations */
-.fade-in {
   opacity: 0;
-  animation: fadeInScale 2s forwards;
-}
-.fade-in.delay {
-  animation-delay: 2s;
+  animation: fadeInText 2s ease-out forwards;
+  color: #fff;
+  text-shadow: 0 0 8px #ffffff80;
 }
 
-@keyframes fadeInScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.animated-text.delay {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5em;
+  animation-delay: 3s;
+}
+
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
