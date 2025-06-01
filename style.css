@@ -5,82 +5,101 @@
 }
 
 body {
-  background: radial-gradient(circle at top, #0d0d2b, #000010);
-  overflow: hidden;
   height: 100vh;
+  background: radial-gradient(ellipse at top, #0d1b2a, #000);
+  overflow: hidden;
   font-family: 'Poppins', sans-serif;
   color: white;
   position: relative;
 }
 
-/* Star Background */
-#stars {
+/* Twinkling stars using layers */
+.stars, .stars2, .stars3 {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 200%;
+  height: 200%;
   background: transparent;
+  background-image: 
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: moveStars 100s linear infinite, twinkle 3s ease-in-out infinite;
+  opacity: 0.6;
   z-index: 0;
-  background-image: radial-gradient(white 1px, transparent 1px),
-                    radial-gradient(white 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: 0 0, 25px 25px;
-  animation: moveStars 60s linear infinite;
+}
+
+.stars2 {
+  background-size: 90px 90px;
+  animation-delay: 1s;
+  opacity: 0.3;
+}
+
+.stars3 {
+  background-size: 40px 40px;
+  animation-delay: 2s;
+  opacity: 0.8;
 }
 
 @keyframes moveStars {
-  from {
-    background-position: 0 0, 25px 25px;
-  }
-  to {
-    background-position: -1000px 1000px, -975px 1025px;
-  }
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, 100px); }
 }
 
-/* Moon */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
+
+/* Moon Styling */
 #moon {
   position: absolute;
-  top: 80px;
+  top: 100px;
   right: 80px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle at 30% 30%, #fff8d6, #d1cdb6);
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle at 30% 30%, #f8f3c5, #d4cfa3 70%, #aaa78f);
   border-radius: 50%;
-  box-shadow: 0 0 40px 20px rgba(255, 255, 200, 0.3);
-  animation: glowMoon 8s ease-in-out infinite alternate;
+  box-shadow: 
+    0 0 40px 20px rgba(255, 255, 200, 0.3),
+    inset -10px -10px 30px rgba(0, 0, 0, 0.3);
+  animation: moonGlow 10s ease-in-out infinite alternate;
   z-index: 1;
 }
 
-@keyframes glowMoon {
-  0% { transform: rotate(0deg) scale(1); filter: brightness(0.9); }
-  100% { transform: rotate(15deg) scale(1.03); filter: brightness(1.2); }
+@keyframes moonGlow {
+  0% { filter: brightness(0.8); transform: scale(1); }
+  100% { filter: brightness(1.2); transform: scale(1.03); }
 }
 
-/* Text Container */
+/* Text Styling */
 .text-container {
   position: absolute;
-  top: 35%;
+  top: 38%;
   width: 100%;
   text-align: center;
   z-index: 2;
 }
 
-/* Animated Text */
 .animated-text {
   font-family: 'Great Vibes', cursive;
   font-size: 3em;
-  opacity: 0;
-  animation: fadeInText 2s ease-out forwards;
   color: #fff;
   text-shadow: 0 0 8px #ffffff80;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: fadeInText 1s ease forwards;
 }
 
-.animated-text.delay {
+.delay {
   font-family: 'Poppins', sans-serif;
   font-size: 1.5em;
-  animation-delay: 3s;
+  margin-top: 20px;
+  animation-delay: 3.5s;
 }
 
 @keyframes fadeInText {
-  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
