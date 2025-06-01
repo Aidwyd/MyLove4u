@@ -1,22 +1,23 @@
-// Letter-by-letter animation (optional but cute)
-function typeText(id, delay = 60) {
+function typeText(id, speed = 60) {
   const el = document.getElementById(id);
-  const text = el.innerText;
+  const fullText = el.innerText;
   el.innerText = "";
-  let i = 0;
 
+  let i = 0;
   const interval = setInterval(() => {
-    if (i < text.length) {
-      el.innerText += text[i++];
-    } else {
+    el.innerText += fullText.charAt(i);
+    i++;
+    if (i === fullText.length) {
       clearInterval(interval);
     }
-  }, delay);
+  }, speed);
 }
 
 window.onload = () => {
   setTimeout(() => {
     typeText("mainText", 100);
-    setTimeout(() => typeText("subText", 40), 2000);
-  }, 800);
+    setTimeout(() => {
+      typeText("subText", 45);
+    }, 1800);
+  }, 1000);
 };
