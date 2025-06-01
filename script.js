@@ -1,39 +1,22 @@
-const canvas = document.getElementById('sky');
-const ctx = canvas.getContext('2d');
+// Letter-by-letter animation (optional but cute)
+function typeText(id, delay = 60) {
+  const el = document.getElementById(id);
+  const text = el.innerText;
+  el.innerText = "";
+  let i = 0;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let stars = [];
-const numStars = 200;
-
-for (let i = 0; i < numStars; i++) {
-  stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    radius: Math.random() * 1.5 + 0.5,
-    alpha: Math.random(),
-    delta: Math.random() * 0.02
-  });
-}
-
-function drawSky() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (let s of stars) {
-    ctx.beginPath();
-    ctx.globalAlpha = s.alpha;
-    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-
-    s.alpha += s.delta;
-    if (s.alpha <= 0 || s.alpha >= 1) {
-      s.delta = -s.delta;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      el.innerText += text[i++];
+    } else {
+      clearInterval(interval);
     }
-  }
-
-  requestAnimationFrame(drawSky);
+  }, delay);
 }
 
-drawSky();
+window.onload = () => {
+  setTimeout(() => {
+    typeText("mainText", 100);
+    setTimeout(() => typeText("subText", 40), 2000);
+  }, 800);
+};
