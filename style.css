@@ -1,134 +1,83 @@
-/* Base reset */
-* {
-  margin: 0; padding: 0; box-sizing: border-box;
-}
-
-html, body {
-  width: 100vw; height: 100vh;
-  overflow: hidden;
-  background: #000;
+body {
+  margin: 0;
+  background: black;
   font-family: 'Great Vibes', cursive;
-  color: white;
+  overflow: hidden;
 }
 
-/* Scene container that will animate the view from grass to sky */
-.scene {
-  position: fixed;
-  bottom: 0;
-  width: 100vw;
+.intro {
+  position: absolute;
+  top: 0;
+  width: 100%;
   height: 100vh;
-  background: linear-gradient(to top, #0a2e07 40%, transparent 100%);
+  background: linear-gradient(to bottom, #000010, #000000);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-end;
-  overflow: visible;
-  animation: moveViewUp 12s forwards ease-in-out;
-  will-change: transform;
-  z-index: 20;
+  z-index: 10;
+  animation: slideUp 10s ease-in-out forwards;
+  animation-delay: 12s;
 }
 
-/* Grass at bottom */
-.grass {
-  width: 100vw;
-  height: 180px;
-  background: linear-gradient(180deg, #0a2e07 0%, #052101 80%);
-  box-shadow: inset 0 5px 12px 5px #09350b;
-  flex-shrink: 0;
-}
-
-/* Intro text styling */
-.intro-text {
-  margin-bottom: 60px;
+.line {
+  opacity: 0;
+  color: white;
   text-align: center;
   letter-spacing: 5px;
-  user-select: none;
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
-  z-index: 30;
+  margin: 15px;
+  font-size: 2em;
 }
 
-/* Text lines hidden initially */
-.intro-text h1, .intro-text h2 {
-  opacity: 0;
-  transform: translateY(20px);
-}
+#line1 { animation: fadeIn 3s ease forwards; animation-delay: 0.5s; }
+#line2 { animation: fadeIn 3s ease forwards; animation-delay: 4s; }
+#line3 { animation: fadeIn 3s ease forwards; animation-delay: 8s; }
+#line4 { animation: fadeIn 3s ease forwards; animation-delay: 11s; }
 
-/* Animate each line with delays */
-#line1 { animation: fadeInUp 3s ease forwards; animation-delay: 0.5s; font-size: 3em;}
-#line2 { animation: fadeInUp 3s ease forwards; animation-delay: 4s; font-size: 1.7em;}
-#line3 { animation: fadeInUp 3s ease forwards; animation-delay: 8s; font-size: 1.7em;}
-#line4 { animation: fadeInUp 3s ease forwards; animation-delay: 11s; font-size: 2em;}
-
-/* Sky container fixed behind */
-.sky-container {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 200vh;
-  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000 100%);
-  overflow: hidden;
-  z-index: 1;
-}
-
-/* Stars canvas full screen */
-canvas#stars {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 200vh;
-  display: block;
-  z-index: 5;
-}
-
-/* Moon styling */
-.moon {
-  position: absolute;
-  top: 140vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, #f9f7e8 0%, #c4c0ad 80%, transparent 100%);
-  box-shadow:
-    0 0 25px 8px #f9f7e8,
-    inset 10px 10px 22px 2px #a19d89,
-    inset -10px -10px 22px 2px #dad6c4;
-  animation: moonPhase 20s infinite ease-in-out alternate;
-  filter: drop-shadow(0 0 8px #fff9d3);
-  z-index: 10;
-}
-
-/* Moon phase animation */
-@keyframes moonPhase {
-  0%, 100% {
-    box-shadow:
-      0 0 25px 8px #f9f7e8,
-      inset 10px 10px 22px 2px #a19d89,
-      inset -10px -10px 22px 2px #dad6c4;
-    filter: drop-shadow(0 0 8px #fff9d3);
-  }
-  50% {
-    box-shadow:
-      0 0 35px 12px #fffde7,
-      inset 15px 15px 30px 4px #b9b59a,
-      inset -15px -15px 30px 4px #f0eed9;
-    filter: drop-shadow(0 0 12px #fffff0);
-  }
-}
-
-/* Fade in and move up text */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Animate scene view from grass to sky */
-@keyframes moveViewUp {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-120vh);
-  }
+@keyframes slideUp {
+  to { transform: translateY(-100vh); }
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
+  z-index: 0;
+  overflow: hidden;
+}
+
+canvas#stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 200vh;
+}
+
+.moon {
+  position: absolute;
+  top: 120vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle at center, #fffbd1, #c2c2c2 70%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px 10px #fffacd;
+  animation: moonPulse 10s infinite ease-in-out;
+  z-index: 2;
+}
+
+@keyframes moonPulse {
+  0%, 100% { box-shadow: 0 0 40px 10px #fffacd; }
+  50% { box-shadow: 0 0 60px 20px #ffffe0; }
 }
