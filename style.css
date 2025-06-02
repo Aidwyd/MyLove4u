@@ -1,48 +1,130 @@
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  height: 100vh;
-  background: radial-gradient(ellipse at top, #0d1b2a, #000);
-  overflow: hidden;
+body, html {
+  height: 100%;
+  background: #000a1a;
+  overflow-x: hidden;
   font-family: 'Poppins', sans-serif;
   color: white;
-  position: relative;
 }
 
-/* Twinkling stars using layers */
+/* CONTAINER */
+#scene {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: #000a1a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 20px;
+  z-index: 5;
+}
+
+.text-container {
+  max-width: 700px;
+  text-align: center;
+  user-select: none;
+}
+
+/* Fonts */
+.great-vibes {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4.2rem;
+  letter-spacing: 0.35em; /* spaced out */
+  color: #fffefc;
+  text-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+
+.poppins {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 1.8rem;
+  margin-top: 1.6rem;
+  letter-spacing: 0.15em; /* slight spacing */
+  color: #ddd;
+  text-shadow: 0 0 5px rgba(255,255,255,0.25);
+}
+
+/* TEXT ANIMATION */
+.animated-text {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation-fill-mode: forwards;
+}
+
+.fade-in-up {
+  animation-name: fadeInUp;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* STARFIELD LAYERS */
+#starfield {
+  position: fixed;
+  top: 100vh; /* Start below viewport */
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, #0d1b2a 0%, #000 90%);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Stars - multiple layers with different sizes and twinkle */
 .stars, .stars2, .stars3 {
   position: absolute;
   width: 200%;
   height: 200%;
   background: transparent;
-  background-image: 
+  background-image:
     radial-gradient(white 1px, transparent 1px),
     radial-gradient(white 1px, transparent 1px);
-  background-size: 60px 60px;
+  background-repeat: repeat;
+  background-position: 0 0, 30px 30px;
   animation: moveStars 100s linear infinite, twinkle 3s ease-in-out infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 1px #fff);
+}
+
+.stars {
+  background-size: 60px 60px;
+  animation-delay: 0s, 0s;
   opacity: 0.6;
-  z-index: 0;
+  filter: drop-shadow(0 0 1.5px #fff);
 }
 
 .stars2 {
   background-size: 90px 90px;
-  animation-delay: 1s;
-  opacity: 0.3;
+  animation-delay: 1.5s, 1s;
+  opacity: 0.35;
+  filter: drop-shadow(0 0 0.7px #eee);
 }
 
 .stars3 {
   background-size: 40px 40px;
-  animation-delay: 2s;
-  opacity: 0.8;
+  animation-delay: 3s, 2s;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 2px #fff);
 }
 
 @keyframes moveStars {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-100px, 100px); }
+  0% { background-position: 0 0, 30px 30px; }
+  100% { background-position: -100px 100px, -70px 80px; }
 }
 
 @keyframes twinkle {
@@ -50,56 +132,70 @@ body {
   50% { opacity: 0.4; }
 }
 
-/* Moon Styling */
+/* MOON */
 #moon {
   position: absolute;
-  top: 100px;
-  right: 80px;
+  top: 40%;
+  right: 20%;
   width: 140px;
   height: 140px;
   background: radial-gradient(circle at 30% 30%, #f8f3c5, #d4cfa3 70%, #aaa78f);
   border-radius: 50%;
-  box-shadow: 
-    0 0 40px 20px rgba(255, 255, 200, 0.3),
+  box-shadow:
+    0 0 40px 20px rgba(255, 255, 200, 0.35),
     inset -10px -10px 30px rgba(0, 0, 0, 0.3);
   animation: moonGlow 10s ease-in-out infinite alternate;
-  z-index: 1;
+  filter: drop-shadow(0 0 8px #ffeeddaa);
 }
 
 @keyframes moonGlow {
-  0% { filter: brightness(0.8); transform: scale(1); }
-  100% { filter: brightness(1.2); transform: scale(1.03); }
+  0% { filter: brightness(0.9); transform: scale(1); }
+  100% { filter: brightness(1.1); transform: scale(1.03); }
 }
 
-/* Text Styling */
-.text-container {
-  position: absolute;
-  top: 38%;
-  width: 100%;
-  text-align: center;
-  z-index: 2;
-}
-
-.animated-text {
-  font-family: 'Great Vibes', cursive;
-  font-size: 3em;
-  color: #fff;
-  text-shadow: 0 0 8px #ffffff80;
+/* SHOOTING STAR */
+#shooting-star {
+  position: fixed;
+  top: 20%;
+  left: -150px;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, white, transparent);
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  animation: fadeInText 1s ease forwards;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 3px white);
+  transform: rotate(45deg);
+  z-index: 10;
 }
 
-.delay {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.5em;
-  margin-top: 20px;
-  animation-delay: 3.5s;
+.shooting {
+  animation: shootingStar 1.2s ease forwards;
+  opacity: 1;
 }
 
-@keyframes fadeInText {
-  to {
+@keyframes shootingStar {
+  0% {
+    left: -150px;
+    top: 20%;
     opacity: 1;
-    transform: translateY(0) scale(1);
+  }
+  100% {
+    left: 120vw;
+    top: 80%;
+    opacity: 0;
+  }
+}
+
+/* CINEMATIC PULL-UP SCENE */
+#scene.up {
+  animation: pullUp 2s ease forwards;
+}
+
+@keyframes pullUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100vh);
   }
 }
