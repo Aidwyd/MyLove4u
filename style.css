@@ -1,83 +1,157 @@
-body {
-  margin: 0;
-  background: black;
+/* Reset and base */
+body, html {
+  margin: 0; padding: 0; overflow: hidden;
+  height: 100vh; width: 100vw;
+  background: #000000;
   font-family: 'Great Vibes', cursive;
-  overflow: hidden;
+  perspective: 1000px;
+  color: white;
 }
 
-.intro {
-  position: absolute;
-  top: 0;
-  width: 100%;
+/* Intro container with 3D perspective */
+.intro-container {
+  position: fixed;
+  width: 100vw;
   height: 100vh;
-  background: linear-gradient(to bottom, #000010, #000000);
+  overflow: hidden;
+  background: linear-gradient(to top, #0a2e07 0%, transparent 60%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: flex-end;
+  transform-style: preserve-3d;
+  transform-origin: center bottom;
+  animation: tiltUp 12s ease forwards;
+  z-index: 20;
+}
+
+/* Silhouette from chest down */
+.silhouette {
+  width: 160px;
+  height: 260px;
+  background: radial-gradient(ellipse at center, rgba(10,10,10,0.9), #000 80%);
+  border-radius: 80px 80px 40px 40px / 130px 130px 80px 80px;
+  box-shadow:
+    inset 0 0 15px 8px rgba(255,255,255,0.05);
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 5px rgba(255,255,255,0.05));
+  transform: translateZ(100px);
+  will-change: transform;
+}
+
+/* Grass at bottom */
+.grass {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 200px;
+  background: linear-gradient(180deg, #0a2e07 0%, #052101 80%);
+  box-shadow: inset 0 5px 12px 5px #09350b;
   z-index: 10;
-  animation: slideUp 10s ease-in-out forwards;
-  animation-delay: 12s;
+  transform: translateZ(50px);
 }
 
-.line {
-  opacity: 0;
-  color: white;
+/* Intro text styling */
+.intro-text {
   text-align: center;
+  margin-bottom: 50px;
+  color: white;
+  z-index: 30;
+  user-select: none;
   letter-spacing: 5px;
-  margin: 15px;
-  font-size: 2em;
+  text-shadow: 0 0 15px rgba(255,255,255,0.5);
 }
 
-#line1 { animation: fadeIn 3s ease forwards; animation-delay: 0.5s; }
-#line2 { animation: fadeIn 3s ease forwards; animation-delay: 4s; }
-#line3 { animation: fadeIn 3s ease forwards; animation-delay: 8s; }
-#line4 { animation: fadeIn 3s ease forwards; animation-delay: 11s; }
+/* Lines hidden by default */
+.intro-text h1, .intro-text h2 {
+  opacity: 0;
+  transform: translateY(30px);
+  margin: 10px 0;
+}
 
-@keyframes fadeIn {
+/* Animations for each line */
+#line1 { animation: fadeInUp 3s ease forwards; animation-delay: 0.5s; font-size: 3.2em;}
+#line2 { animation: fadeInUp 3s ease forwards; animation-delay: 4s; font-size: 1.8em;}
+#line3 { animation: fadeInUp 3s ease forwards; animation-delay: 8s; font-size: 1.8em;}
+#line4 { animation: fadeInUp 3s ease forwards; animation-delay: 11s; font-size: 2em;}
+
+/* Sky container behind intro */
+.sky-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 200vh;
+  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000 100%);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Canvas full screen */
+canvas#stars {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 200vh;
+  display: block;
+  z-index: 5;
+}
+
+/* Moon styling */
+.moon {
+  position: absolute;
+  top: 140vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #f9f7e8 0%, #c4c0ad 80%, transparent 100%);
+  box-shadow:
+    0 0 30px 10px #f9f7e8,
+    inset 10px 10px 25px 3px #a19d89,
+    inset -10px -10px 25px 3px #dad6c4;
+  animation: moonPhase 20s infinite ease-in-out alternate;
+  filter: drop-shadow(0 0 10px #fff9d3);
+  z-index: 10;
+}
+
+/* Moon subtle phase animation */
+@keyframes moonPhase {
+  0% {
+    box-shadow:
+      0 0 30px 10px #f9f7e8,
+      inset 10px 10px 25px 3px #a19d89,
+      inset -10px -10px 25px 3px #dad6c4;
+    filter: drop-shadow(0 0 10px #fff9d3);
+  }
+  50% {
+    box-shadow:
+      0 0 45px 15px #fffde7,
+      inset 15px 15px 35px 5px #b9b59a,
+      inset -15px -15px 35px 5px #f0eed9;
+    filter: drop-shadow(0 0 15px #fffff0);
+  }
+  100% {
+    box-shadow:
+      0 0 30px 10px #f9f7e8,
+      inset 10px 10px 25px 3px #a19d89,
+      inset -10px -10px 25px 3px #dad6c4;
+    filter: drop-shadow(0 0 10px #fff9d3);
+  }
+}
+
+/* Fade in + translate up */
+@keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideUp {
-  to { transform: translateY(-100vh); }
-}
-
-.sky {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 200vh;
-  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
-  z-index: 0;
-  overflow: hidden;
-}
-
-canvas#stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  width: 100%;
-  height: 200vh;
-}
-
-.moon {
-  position: absolute;
-  top: 120vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle at center, #fffbd1, #c2c2c2 70%, transparent 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 40px 10px #fffacd;
-  animation: moonPulse 10s infinite ease-in-out;
-  z-index: 2;
-}
-
-@keyframes moonPulse {
-  0%, 100% { box-shadow: 0 0 40px 10px #fffacd; }
-  50% { box-shadow: 0 0 60px 20px #ffffe0; }
+/* Tilt up 3D intro container */
+@keyframes tiltUp {
+  0% {
+    transform: rotateX(0deg) translateZ(100px);
+  }
+  100% {
+    transform: rotateX(-70deg) translateZ(100px) translateY(-120vh);
+  }
 }
