@@ -31,7 +31,7 @@ function drawStars() {
 
 drawStars();
 
-// Shooting Star every 15s
+// Shooting Star slower across the sky every 15s
 setInterval(() => {
   let sx = Math.random() * canvas.width;
   let sy = Math.random() * canvas.height / 2;
@@ -39,19 +39,26 @@ setInterval(() => {
   let opacity = 1;
 
   function shoot() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawStars();  // redraw stars behind shooting star
+
     ctx.beginPath();
     ctx.moveTo(sx, sy);
     ctx.lineTo(sx - length, sy + length / 2);
-    ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
+    let grad = ctx.createLinearGradient(sx, sy, sx - length, sy + length / 2);
+    grad.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+    grad.addColorStop(1, `rgba(255, 255, 255, 0)`);
+    ctx.strokeStyle = grad;
     ctx.lineWidth = 2;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "white";
     ctx.stroke();
 
-    sx -= 10;
-    sy += 5;
+    sx += 15;  // slow horizontal speed
+    sy += 7.5; // slow vertical speed
     opacity -= 0.02;
 
     if (opacity > 0) requestAnimationFrame(shoot);
   }
-
   shoot();
 }, 15000);
