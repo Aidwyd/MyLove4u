@@ -1,60 +1,57 @@
-// Text lines to show in sequence
-const messages = [
-  { id: "line1", text: "H i   M i   A m o r", delay: 100, font: "great-vibes" }, // spaced out
-  { id: "line2", text: "I made this for you, to show how much I love and adore you", delay: 35, font: "poppins" },
-  { id: "line3", text: "I <3 you Alex", delay: 50, font: "poppins" },
-  { id: "line4", text: "Enjoy!", delay: 70, font: "poppins" }
-];
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
-function typeWriter(el, text, speed = 50) {
-  return new Promise(resolve => {
-    el.innerText = "";
-    let i = 0;
-    let interval = setInterval(() => {
-      el.innerText += text.charAt(i);
-      i++;
-      if (i === text.length) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, speed);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight * 2;
+
+let stars = [];
+
+for (let i = 0; i < 300; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5,
+    alpha: Math.random(),
+    delta: Math.random() * 0.02 + 0.005
   });
 }
 
-async function animateTextSequence() {
-  for (let i = 0; i < messages.length; i++) {
-    const line = document.getElementById(messages[i].id);
-    line.className = `animated-text ${messages[i].font} fade-in-up`;
-    await typeWriter(line, messages[i].text, messages[i].delay);
-    await new Promise(r => setTimeout(r, 1000)); // pause after line typed
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let s of stars) {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+    ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+    ctx.fill();
+    s.alpha += s.delta;
+    if (s.alpha <= 0 || s.alpha >= 1) s.delta *= -1;
   }
-
-  // After last line, start cinematic pull-up & show starfield
-  const scene = document.getElementById("scene");
-  scene.classList.add("up");
-
-  // Show starfield after animation ends (2s)
-  setTimeout(() => {
-    document.getElementById("starfield").style.top = "0";
-  }, 2000);
+  requestAnimationFrame(drawStars);
 }
 
-// Shooting star every 15 seconds
-function shootingStarCycle() {
-  const star = document.getElementById("shooting-star");
+drawStars();
+
+// Shooting Star every 15s
+setInterval(() => {
+  let sx = Math.random() * canvas.width;
+  let sy = Math.random() * canvas.height / 2;
+  let length = 300;
+  let opacity = 1;
 
   function shoot() {
-    star.classList.add("shooting");
-    setTimeout(() => {
-      star.classList.remove("shooting");
-    }, 1200);
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(sx - length, sy + length / 2);
+    ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    sx -= 10;
+    sy += 5;
+    opacity -= 0.02;
+
+    if (opacity > 0) requestAnimationFrame(shoot);
   }
 
   shoot();
-  setInterval(shoot, 15000);
-}
-
-window.onload = () => {
-  animateTextSequence();
-  shootingStarCycle();
-};
+}, 15000);
