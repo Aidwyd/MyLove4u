@@ -1,54 +1,49 @@
-/* Remove slideUp animation */
+body {
+  margin: 0;
+  background: black;
+  font-family: 'Great Vibes', cursive;
+  overflow: hidden;
+}
 
 .intro {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(to bottom, #000010, #000000);
+
+  /* Solid black background for fade effect */
+  background-color: black;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 10;
-  
-  /* New animation sequence */
+
+  /* Animate black background fade out starting at 15s, duration 3s */
   animation: bgFadeOut 3s ease forwards;
-  animation-delay: 15s; /* after text fadeIns finish */
+  animation-delay: 15s;
 }
 
-/* Fade in text lines as before */
-#line1 { animation: fadeIn 3s ease forwards; animation-delay: 0.5s; }
-#line2 { animation: fadeIn 3s ease forwards; animation-delay: 4s; }
-#line3 { animation: fadeIn 3s ease forwards; animation-delay: 8s; }
-#line4 { animation: fadeIn 3s ease forwards; animation-delay: 11s; }
-
-/* Add fadeOut animation for the text lines */
 .line {
+  color: white;
+  text-align: center;
+  letter-spacing: 5px;
+  margin: 15px;
+  font-size: 2em;
+  opacity: 0;
   animation-fill-mode: forwards;
-  animation-timing-function: ease;
 }
 
-/* After some delay, fade text out */
-#line1 {
-  animation-name: fadeIn, fadeOut;
-  animation-duration: 3s, 2s;
-  animation-delay: 0.5s, 15.5s;
-}
-#line2 {
-  animation-name: fadeIn, fadeOut;
-  animation-duration: 3s, 2s;
-  animation-delay: 4s, 16s;
-}
-#line3 {
-  animation-name: fadeIn, fadeOut;
-  animation-duration: 3s, 2s;
-  animation-delay: 8s, 16.5s;
-}
-#line4 {
-  animation-name: fadeIn, fadeOut;
-  animation-duration: 3s, 2s;
-  animation-delay: 11s, 17s;
+/* Fade in text lines */
+#line1 { animation: fadeIn 3s ease forwards, fadeOut 2s ease forwards; animation-delay: 0.5s, 18s; }
+#line2 { animation: fadeIn 3s ease forwards, fadeOut 2s ease forwards; animation-delay: 4s, 18.5s; }
+#line3 { animation: fadeIn 3s ease forwards, fadeOut 2s ease forwards; animation-delay: 8s, 19s; }
+#line4 { animation: fadeIn 3s ease forwards, fadeOut 2s ease forwards; animation-delay: 11s, 19.5s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOut {
@@ -56,8 +51,46 @@
   to { opacity: 0; }
 }
 
-/* Background fade out to transparent */
 @keyframes bgFadeOut {
-  from { background: linear-gradient(to bottom, #000010, #000000); }
-  to { background: transparent; }
+  from { background-color: black; }
+  to { background-color: transparent; }
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
+  z-index: 0;
+  overflow: hidden;
+}
+
+canvas#stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 200vh;
+}
+
+.moon {
+  position: absolute;
+  top: 120vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle at center, #fffbd1, #c2c2c2 70%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px 10px #fffacd;
+  animation: moonPulse 10s infinite ease-in-out;
+  z-index: 2;
+}
+
+@keyframes moonPulse {
+  0%, 100% { box-shadow: 0 0 40px 10px #fffacd; }
+  50% { box-shadow: 0 0 60px 20px #ffffe0; }
 }
